@@ -22,6 +22,8 @@
 		5916E95B2054D60100D2B680 /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5916E95A2054D60100D2B680 /* FolderTableViewController.swift */; };
 		5916E95F2054EE7300D2B680 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5916E95E2054EE7300D2B680 /* URL.swift */; };
 		5916E97820551D6500D2B680 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5916E97720551D6500D2B680 /* PlayerViewController.swift */; };
+		5916E97B20556F2200D2B680 /* ControlGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5916E97A20556F2200D2B680 /* ControlGestureRecognizer.swift */; };
+		5916E97D20557E2600D2B680 /* ContentHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5916E97C20557E2600D2B680 /* ContentHelper.swift */; };
 		D1CB96ADFF4B5C649ED2FCD8 /* Pods_ListenerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28512657964776F39713BFA0 /* Pods_ListenerUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +68,8 @@
 		5916E95A2054D60100D2B680 /* FolderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderTableViewController.swift; sourceTree = "<group>"; };
 		5916E95E2054EE7300D2B680 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		5916E97720551D6500D2B680 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		5916E97A20556F2200D2B680 /* ControlGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlGestureRecognizer.swift; sourceTree = "<group>"; };
+		5916E97C20557E2600D2B680 /* ContentHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentHelper.swift; sourceTree = "<group>"; };
 		8270A70FA3CFB55F0C1CB941 /* Pods-ListenerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ListenerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ListenerTests/Pods-ListenerTests.release.xcconfig"; sourceTree = "<group>"; };
 		8B45E17574D607B30AC5C456 /* Pods-ListenerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ListenerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ListenerTests/Pods-ListenerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A07D057AF8689E2103C2CFDC /* Pods-ListenerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ListenerUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ListenerUITests/Pods-ListenerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -139,6 +143,7 @@
 		5916E9222054D00700D2B680 /* Listener */ = {
 			isa = PBXGroup;
 			children = (
+				5916E97920556F0A00D2B680 /* Gesture */,
 				5916E95D2054EE6400D2B680 /* Extensions */,
 				5916E95C2054D7D700D2B680 /* Hepers */,
 				5916E9552054D43C00D2B680 /* ViewControllers */,
@@ -185,6 +190,7 @@
 		5916E95C2054D7D700D2B680 /* Hepers */ = {
 			isa = PBXGroup;
 			children = (
+				5916E97C20557E2600D2B680 /* ContentHelper.swift */,
 			);
 			path = Hepers;
 			sourceTree = "<group>";
@@ -205,6 +211,14 @@
 				28512657964776F39713BFA0 /* Pods_ListenerUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5916E97920556F0A00D2B680 /* Gesture */ = {
+			isa = PBXGroup;
+			children = (
+				5916E97A20556F2200D2B680 /* ControlGestureRecognizer.swift */,
+			);
+			path = Gesture;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -505,9 +519,11 @@
 				5916E95B2054D60100D2B680 /* FolderTableViewController.swift in Sources */,
 				5916E9592054D48F00D2B680 /* FolderViewController.swift in Sources */,
 				5916E95F2054EE7300D2B680 /* URL.swift in Sources */,
+				5916E97B20556F2200D2B680 /* ControlGestureRecognizer.swift in Sources */,
 				5916E9282054D00700D2B680 /* DocumentViewController.swift in Sources */,
 				5916E9262054D00700D2B680 /* DocumentBrowserViewController.swift in Sources */,
 				5916E9242054D00700D2B680 /* AppDelegate.swift in Sources */,
+				5916E97D20557E2600D2B680 /* ContentHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

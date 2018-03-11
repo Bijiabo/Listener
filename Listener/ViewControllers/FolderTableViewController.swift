@@ -68,7 +68,7 @@ class FolderTableViewController: UITableViewController {
 
         let currentURL = models[indexPath.row]
         let currentPath = currentURL.path
-        cell.textLabel?.text =  (currentURL.isDirectory ? "[Folder] " : "") + convertPathToFolderName(path: currentPath)
+        cell.textLabel?.text =  (currentURL.isDirectory ? "[Folder] " : "") + ContentHelper.sharedInstance.convertPathToFolderName(path: currentPath)
 
         return cell
     }
@@ -82,9 +82,11 @@ class FolderTableViewController: UITableViewController {
     
     private func loadSubPathFolder(targetPath: URL, index: Int) {
         guard targetPath.isDirectory else {
-            let playerVC = PlayerViewController()
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let playerVC: PlayerViewController = storyboard.instantiateViewController(withIdentifier: "Player") as! PlayerViewController
             playerVC.playList = models
             playerVC.targetPlayIndex = index
+            playerVC.contentTitle = convertPathToFolderName(path: models[index].path)
             
             let playerNavigationController = UINavigationController()
             playerNavigationController.viewControllers = [playerVC]
