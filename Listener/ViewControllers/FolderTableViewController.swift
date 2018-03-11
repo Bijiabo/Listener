@@ -81,7 +81,12 @@ class FolderTableViewController: UITableViewController {
     }
     
     private func loadSubPathFolder(targetPath: URL) {
-        guard isFolderForURL(url: targetPath) else {return}
+        guard targetPath.isDirectory else {
+            let playerNavigationController = UINavigationController()
+            playerNavigationController.viewControllers = [PlayerViewController()]
+            self.present(playerNavigationController, animated: true, completion: nil)
+            return
+        }
         
         let targetFolderVC = FolderViewController()
         targetFolderVC.folderURL = targetPath

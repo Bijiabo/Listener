@@ -51,13 +51,38 @@ class FolderViewController: UIViewController {
     private func listFiles() {
         guard let folderURL = folderURL else {return}
         do {
-            let fileURLs = try fileManager.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil)
+            var fileURLs = try fileManager.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil)
             print(fileURLs)
+            
+            // filter files
+            fileURLs = fileURLs.filter({ (fileURL: URL) -> Bool in
+                var needToKeep: Bool = true
+                
+                // filter .hidden files
+                if fileURL.path.hasPrefix(".") {
+                    return false
+                }
+                
+                // filiter .mp3 files
+                if !hasFolderInFileList(fileList: fileURLs) {
+                    needToKeep = fileURL.path.hasSuffix(".mp3")
+                }
+                return needToKeep
+            })
+            
             folderTableViewController.models = fileURLs
-            // process files
         } catch {
             print("Error while enumerating files \(folderURL.path): \(error.localizedDescription)")
         }
+    }
+    
+    private func hasFolderInFileList(fileList: [URL]) -> Bool {
+        for fileItem in fileList {
+            if fileItem.isDirectory {
+                return true
+            }
+        }
+        return false
     }
     
     private func matches(for regex: String, in text: String) -> [String] {
