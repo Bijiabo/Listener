@@ -12,11 +12,23 @@ import AVKit
 class PlayerViewController: UIViewController {
     
     let playButton = UIButton()
+    var playList: [URL] = [URL]()
+    var playerItems: [AVPlayerItem] = [AVPlayerItem]()
+    var player: AVQueuePlayer = AVQueuePlayer(items: [AVPlayerItem]())
+    var currentPlayIndex: Int = 0
+    var targetPlayIndex: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupViews()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        setupPlayer()
+        startPlay()
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,6 +53,27 @@ class PlayerViewController: UIViewController {
     
     @objc func closePlayerPanel() {
         self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    private func setupPlayer() {
+        playerItems = self.playList.map { (playListItem: URL) -> AVPlayerItem in
+            return AVPlayerItem(url: playListItem)
+        }
+        player = AVQueuePlayer(items: playerItems)
+    }
+    
+    private func startPlay() {
+        player.play()
+        // guard let currentPlayItem = player.currentItem else {return}
+        // var currentIndex = player.items().index(of: currentPlayItem)
+        for (index, item) in player.items().enumerated() {
+            if index < targetPlayIndex {
+                player.advanceToNextItem()
+            } else {
+                player.play()
+                break
+            }
+        }
     }
     
 

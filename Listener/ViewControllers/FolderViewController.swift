@@ -59,9 +59,11 @@ class FolderViewController: UIViewController {
                 var needToKeep: Bool = true
                 
                 // filter .hidden files
+                /*
                 if fileURL.path.hasPrefix(".") {
                     return false
                 }
+                */
                 
                 // filiter .mp3 files
                 if !hasFolderInFileList(fileList: fileURLs) {

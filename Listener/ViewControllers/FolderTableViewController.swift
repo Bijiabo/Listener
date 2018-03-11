@@ -77,14 +77,19 @@ class FolderTableViewController: UITableViewController {
         let currentPath = models[indexPath.row].path
         print(currentPath)
         
-        loadSubPathFolder(targetPath: models[indexPath.row])
+        loadSubPathFolder(targetPath: models[indexPath.row], index: indexPath.row)
     }
     
-    private func loadSubPathFolder(targetPath: URL) {
+    private func loadSubPathFolder(targetPath: URL, index: Int) {
         guard targetPath.isDirectory else {
+            let playerVC = PlayerViewController()
+            playerVC.playList = models
+            playerVC.targetPlayIndex = index
+            
             let playerNavigationController = UINavigationController()
-            playerNavigationController.viewControllers = [PlayerViewController()]
+            playerNavigationController.viewControllers = [playerVC]
             self.present(playerNavigationController, animated: true, completion: nil)
+            
             return
         }
         
