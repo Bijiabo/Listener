@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import MediaPlayer
 
 class PlayerViewController: UIViewController {
     
@@ -39,8 +40,12 @@ class PlayerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        setupBackgroundPlaySession()
         setupPlayer()
         startPlay()
+        
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        self.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -62,6 +67,7 @@ class PlayerViewController: UIViewController {
         touchHandleMark.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         touchHandleMark.backgroundColor = UIColor.blue
         view.addSubview(touchHandleMark)
+        touchHandleMark.isHidden = true
         
         controlGesture.delegate = self
     }
@@ -70,6 +76,7 @@ class PlayerViewController: UIViewController {
         title = ContentHelper.sharedInstance.convertPathToFolderName(path: playList[currentTrack].path)
         titleLabel.text = title
         rateLabel.text = "\(rate)"
+        setBackgroundPlayInformation()
     }
     
     @objc func tapPlayButton() {
@@ -91,35 +98,17 @@ class PlayerViewController: UIViewController {
         playAt(index: targetPlayIndex)
     }
     
-    // custom gesture
-    @IBAction func handleSwipe(_ sender: UISwipeGestureRecognizer) {
-        nextTrack()
-    }
-    
-    @IBAction func handleSwipe_Left(_ sender: UISwipeGestureRecognizer) {
-        previousTrack()
-    }
-    
-    
-    @IBAction func handleSwipe_Up(_ sender: UISwipeGestureRecognizer) {
-        upRate()
-        
-    }
-    
-    @IBAction func handleSwipe_Down(_ sender: UISwipeGestureRecognizer) {
-        downRate()
-    }
-    
-    
-    @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
+    // player functions
+    func togglePlayPause() {
         if player.rate > 0 {
             player.pause()
         } else {
             player.play()
         }
+        updateDisplay()
     }
     
-    // player functions
+    
     func previousTrack() {
         if currentTrack - 1 < 0 {
             currentTrack = (playerItems.count - 1) < 0 ? 0 : (playerItems.count - 1)
@@ -178,6 +167,52 @@ class PlayerViewController: UIViewController {
         
         print(player.rate)
     }
+    
+    func setupBackgroundPlaySession() {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setActive(true)
+            try session.setCategory(AVAudioSessionCategoryPlayback)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func setBackgroundPlayInformation() {
+        
+        let itemArtwork = MPMediaItemArtwork(boundsSize: CGSize(width: 200, height: 200)) { (size: CGSize) -> UIImage in
+            return UIImage()
+        }
+        let settings = [MPMediaItemPropertyTitle: "大标题",
+                        MPMediaItemPropertyArtist: "小标题",
+                        MPMediaItemPropertyPlaybackDuration: "\(player.currentItem?.duration)",
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: "\(player.currentTime)",
+            MPMediaItemPropertyArtwork: itemArtwork,
+            ] as [String : Any]
+        
+            MPNowPlayingInfoCenter.default().setValue(settings, forKey: "nowPlayingInfo")
+    }
+    
+    override func remoteControlReceived(with event: UIEvent?) {
+        guard let event = event else {return}
+        switch event.type {
+        case .remoteControl:
+            switch event.subtype {
+            case .remoteControlTogglePlayPause:
+                togglePlayPause()
+            case .remoteControlPlay:
+                player.pause()
+                updateDisplay()
+            case .remoteControlPause:
+                player.play()
+                updateDisplay()
+            default:
+                break
+            }
+        default:
+            break
+        }
+    }
 
     /*
     // MARK: - Navigation
@@ -195,22 +230,47 @@ extension PlayerViewController: UIGestureRecognizerDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        print(touches.count)
-        for touch in touches {
-            let location = touch.location(in: self.view)
-            touchHandleMark.frame = CGRect(x: location.x-22, y: location.y-22, width: 44, height: 44)
-            print(location)
-        }
+        touch_startLocation = touches.first!.location(in: self.view)
+        touchHandleMark.isHidden = false
+        touchHandleMark.frame = CGRect(x: touch_startLocation.x-22, y: touch_startLocation.y-22, width: 44, height: 44)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            let location = touch.location(in: self.view)
-            touchHandleMark.frame = CGRect(x: location.x-22, y: location.y-22, width: 44, height: 44)
-            print(location)
-        }
+        let touch_location = touches.first!.location(in: self.view)
+        touchHandleMark.frame = CGRect(x: touch_location.x-22, y: touch_location.y-22, width: 44, height: 44)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        touchHandleMark.isHidden = true
+        
+        touch_endLocation = touches.first!.location(in: self.view)
+        
+        let x_distance = touch_endLocation.x - touch_startLocation.x
+        let y_distance = touch_endLocation.y - touch_startLocation.y
+        
+        if x_distance == 0 && y_distance == 0 {
+            togglePlayPause()
+            return
+        }
+        
+        if fabs(x_distance) > fabs(y_distance) {
+            // swipe left or right
+            if x_distance > 0 {
+                nextTrack()
+            } else {
+                previousTrack()
+            }
+        } else {
+            // swipe up or down
+            if y_distance > 0 {
+                downRate()
+            } else {
+                upRate()
+            }
+        }
+        
 //        print(touches.count)
     }
+    
+    
 }

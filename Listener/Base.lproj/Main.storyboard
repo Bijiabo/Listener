@@ -116,13 +116,6 @@
                             <constraint firstItem="JDT-Gi-UyR" firstAttribute="top" secondItem="OV4-dp-RT8" secondAttribute="top" constant="100" id="ydZ-Km-VJd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="OV4-dp-RT8"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="jrv-UI-dEI" appends="YES" id="2sx-zx-6cy"/>
-                            <outletCollection property="gestureRecognizers" destination="pr1-SQ-3hn" appends="YES" id="YV0-kc-2xU"/>
-                            <outletCollection property="gestureRecognizers" destination="brY-9x-PPh" appends="YES" id="KCU-8m-bgi"/>
-                            <outletCollection property="gestureRecognizers" destination="ii1-jb-EjV" appends="YES" id="4hW-nh-03p"/>
-                            <outletCollection property="gestureRecognizers" destination="mp1-cC-vX0" appends="YES" id="veb-dT-iVK"/>
-                        </connections>
                     </view>
                     <connections>
                         <outlet property="controlGesture" destination="RCD-ul-qQH" id="eYS-Re-XiE"/>
@@ -136,31 +129,6 @@
                         <action selector="controlGesture:" destination="lBL-Tt-lYx" id="Zgk-e0-NMu"/>
                     </connections>
                 </gestureRecognizer>
-                <swipeGestureRecognizer direction="right" id="jrv-UI-dEI" userLabel="(Right)Swipe Gesture Recognizer">
-                    <connections>
-                        <action selector="handleSwipe:" destination="lBL-Tt-lYx" id="jqP-yk-dlP"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="up" id="brY-9x-PPh" userLabel="(Up)Swipe Gesture Recognizer">
-                    <connections>
-                        <action selector="handleSwipe_Up:" destination="lBL-Tt-lYx" id="OyI-Op-O9p"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <tapGestureRecognizer id="pr1-SQ-3hn">
-                    <connections>
-                        <action selector="handleTap:" destination="lBL-Tt-lYx" id="GW3-id-9cD"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <swipeGestureRecognizer direction="down" id="ii1-jb-EjV" userLabel="(Down)Swipe Gesture Recognizer">
-                    <connections>
-                        <action selector="handleSwipe_Down:" destination="lBL-Tt-lYx" id="iWq-22-il3"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="left" id="mp1-cC-vX0" userLabel="(Left)Swipe Gesture Recognizer">
-                    <connections>
-                        <action selector="handleSwipe_Left:" destination="lBL-Tt-lYx" id="eoY-rz-Oiw"/>
-                    </connections>
-                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1997.5999999999999" y="653.52323838080963"/>
         </scene>
