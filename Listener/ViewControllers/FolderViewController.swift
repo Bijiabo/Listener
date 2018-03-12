@@ -46,6 +46,12 @@ class FolderViewController: UIViewController {
         
         view.autoresizesSubviews = true
         self.edgesForExtendedLayout = .init(rawValue: 0)
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(closePanel))
+    }
+    
+    @objc func closePanel() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     private func listFiles() {

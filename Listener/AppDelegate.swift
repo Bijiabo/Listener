@@ -16,9 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        
         let defaultNavigationController = UINavigationController()
-        defaultNavigationController.viewControllers = [FolderViewController()]
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let playerVC: PlayerViewController = storyboard.instantiateViewController(withIdentifier: "Player") as! PlayerViewController
+        
+        defaultNavigationController.viewControllers = [playerVC]
         defaultNavigationController.view.backgroundColor = UIColor.white
         
         let bounds = UIScreen.main.bounds

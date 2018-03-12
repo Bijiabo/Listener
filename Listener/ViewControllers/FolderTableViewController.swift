@@ -82,6 +82,7 @@ class FolderTableViewController: UITableViewController {
     
     private func loadSubPathFolder(targetPath: URL, index: Int) {
         guard targetPath.isDirectory else {
+            /*
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let playerVC: PlayerViewController = storyboard.instantiateViewController(withIdentifier: "Player") as! PlayerViewController
             playerVC.playList = models
@@ -91,7 +92,13 @@ class FolderTableViewController: UITableViewController {
             let playerNavigationController = UINavigationController()
             playerNavigationController.viewControllers = [playerVC]
             self.present(playerNavigationController, animated: true, completion: nil)
-            
+            */
+            let notificationObject = [
+                "playList": models,
+                "targetPlayIndex": index,
+                ] as [String : Any]
+            NotificationCenter.default.post(name: NotificationHelper.sharedInstance.notification_selectPlayList, object: notificationObject)
+            self.parent?.navigationController?.dismiss(animated: true, completion: nil)
             return
         }
         

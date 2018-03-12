@@ -23,7 +23,6 @@ class PlayerViewController: UIViewController {
     var playList: [URL] = [URL]()
     var playerItems: [AVPlayerItem] = [AVPlayerItem]()
     var player: AVQueuePlayer = AVQueuePlayer(items: [AVPlayerItem]())
-    var currentPlayIndex: Int = 0
     var targetPlayIndex: Int = 0
     var currentTrack = 0
     var rate: Float = 1.0
@@ -35,17 +34,35 @@ class PlayerViewController: UIViewController {
         super.viewDidLoad()
 
         setupViews()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
         setupBackgroundPlaySession()
         setupPlayer()
         startPlay()
         
         UIApplication.shared.beginReceivingRemoteControlEvents()
         self.becomeFirstResponder()
+        
+        // add notification observer
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveSelectPlayListNotification(sender:)), name: NotificationHelper.sharedInstance.notification_selectPlayList, object: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        updateDisplay()
+    }
+    
+    @objc func didReceiveSelectPlayListNotification(sender: Notification) {
+        guard let object = sender.object as? [String: Any] else {return}
+        guard
+        let _playList = object["playList"] as? [URL],
+        let _targetPlayIndex = object["targetPlayIndex"] as? Int
+            else {return}
+        
+        self.playList = _playList
+        self.targetPlayIndex = _targetPlayIndex
+        
+        setupPlayer()
+        startPlay()
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,7 +71,6 @@ class PlayerViewController: UIViewController {
     }
     
     private func setupViews() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(closePlayerPanel))
         
         title = "Play View"
         view.backgroundColor = UIColor.white
@@ -70,9 +86,26 @@ class PlayerViewController: UIViewController {
         touchHandleMark.isHidden = true
         
         controlGesture.delegate = self
+        
+        setupNavigationBar()
+    }
+    
+    private func setupNavigationBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "PlayList", style: UIBarButtonItemStyle.done, target: self, action: #selector(pickPlayList))
+    }
+    
+    @objc func pickPlayList() {
+        let defaultNavigationController = UINavigationController()
+        let rootViewController: UIViewController = FolderViewController()
+        defaultNavigationController.viewControllers = [rootViewController]
+        defaultNavigationController.view.backgroundColor = UIColor.white
+        
+        self.present(defaultNavigationController, animated: true, completion: nil)
     }
     
     private func updateDisplay() {
+        if playList.count == 0 {return}
+        
         title = ContentHelper.sharedInstance.convertPathToFolderName(path: playList[currentTrack].path)
         titleLabel.text = title
         rateLabel.text = "\(rate)"
@@ -148,6 +181,7 @@ class PlayerViewController: UIViewController {
                 break
             }
         }
+        currentTrack = index
         updateDisplay()
     }
     

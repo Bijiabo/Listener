@@ -24,6 +24,7 @@
 		5916E97820551D6500D2B680 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5916E97720551D6500D2B680 /* PlayerViewController.swift */; };
 		5916E97B20556F2200D2B680 /* ControlGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5916E97A20556F2200D2B680 /* ControlGestureRecognizer.swift */; };
 		5916E97D20557E2600D2B680 /* ContentHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5916E97C20557E2600D2B680 /* ContentHelper.swift */; };
+		5983F10C205673D100FDD551 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5983F10B205673D100FDD551 /* NotificationHelper.swift */; };
 		D1CB96ADFF4B5C649ED2FCD8 /* Pods_ListenerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28512657964776F39713BFA0 /* Pods_ListenerUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,7 @@
 		5916E97720551D6500D2B680 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		5916E97A20556F2200D2B680 /* ControlGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlGestureRecognizer.swift; sourceTree = "<group>"; };
 		5916E97C20557E2600D2B680 /* ContentHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentHelper.swift; sourceTree = "<group>"; };
+		5983F10B205673D100FDD551 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		8270A70FA3CFB55F0C1CB941 /* Pods-ListenerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ListenerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ListenerTests/Pods-ListenerTests.release.xcconfig"; sourceTree = "<group>"; };
 		8B45E17574D607B30AC5C456 /* Pods-ListenerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ListenerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ListenerTests/Pods-ListenerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A07D057AF8689E2103C2CFDC /* Pods-ListenerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ListenerUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ListenerUITests/Pods-ListenerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				5916E97C20557E2600D2B680 /* ContentHelper.swift */,
+				5983F10B205673D100FDD551 /* NotificationHelper.swift */,
 			);
 			path = Hepers;
 			sourceTree = "<group>";
@@ -524,6 +527,7 @@
 				5916E9262054D00700D2B680 /* DocumentBrowserViewController.swift in Sources */,
 				5916E9242054D00700D2B680 /* AppDelegate.swift in Sources */,
 				5916E97D20557E2600D2B680 /* ContentHelper.swift in Sources */,
+				5983F10C205673D100FDD551 /* NotificationHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
