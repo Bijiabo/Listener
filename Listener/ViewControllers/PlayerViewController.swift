@@ -16,7 +16,7 @@ class PlayerViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var controlGesture: ControlGestureRecognizer!
     @IBOutlet weak var rateLabel: UILabel!
-    var touchHandleMark: UIView = UIView()
+    var touchHandleMark: UIImageView = UIImageView(image: UIImage(named: "touchHandleMark"))
     
     var contentTitle: String = ""
     let playButton = UIButton()
@@ -43,11 +43,22 @@ class PlayerViewController: UIViewController {
         
         // add notification observer
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveSelectPlayListNotification(sender:)), name: NotificationHelper.sharedInstance.notification_selectPlayList, object: nil)
+        NotificationCenter.default.addObserver(self, selector: Selector(("playerDidFinishPlaying:")),
+                                               name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player.currentItem)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        updateDisplay()
+    }
+    
+    @objc func playerDidFinishPlaying(note: NSNotification) {
+        print("Video Finished")
+        if currentTrack + 1 >= playerItems.count {
+            currentTrack = 0
+        } else {
+            currentTrack += 1;
+        }
         updateDisplay()
     }
     
@@ -73,15 +84,13 @@ class PlayerViewController: UIViewController {
     private func setupViews() {
         
         title = "Play View"
-        view.backgroundColor = UIColor.white
         /*
         playButton.setTitle("Play Button", for: UIControlState.normal)
         playButton.addTarget(self, action: #selector(tapPlayButton), for: UIControlEvents.touchUpInside)
         view.addSubview(playButton)
         */
         titleLabel.text = contentTitle
-        touchHandleMark.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-        touchHandleMark.backgroundColor = UIColor.blue
+        touchHandleMark.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         view.addSubview(touchHandleMark)
         touchHandleMark.isHidden = true
         
@@ -183,6 +192,11 @@ class PlayerViewController: UIViewController {
         }
         currentTrack = index
         updateDisplay()
+        
+        player.addPeriodicTimeObserver(forInterval: CMTimeMake(5, 1), queue: DispatchQueue.main) { [weak self](time: CMTime) in
+            print("run time addPeriodicTimeObserver")
+            self?.updateDisplay()
+        }
     }
     
     func upRate() {
@@ -213,14 +227,16 @@ class PlayerViewController: UIViewController {
     }
     
     func setBackgroundPlayInformation() {
-        
+        guard let playerCurrentItem = player.currentItem else {return}
         let itemArtwork = MPMediaItemArtwork(boundsSize: CGSize(width: 200, height: 200)) { (size: CGSize) -> UIImage in
-            return UIImage()
+            return UIImage(named: "RemoteControl")!
         }
-        let settings = [MPMediaItemPropertyTitle: "大标题",
-                        MPMediaItemPropertyArtist: "小标题",
-                        MPMediaItemPropertyPlaybackDuration: "\(player.currentItem?.duration)",
-            MPNowPlayingInfoPropertyElapsedPlaybackTime: "\(player.currentTime)",
+        
+        let settings = [
+            MPMediaItemPropertyTitle: ContentHelper.sharedInstance.convertPathToFolderName(path: playList[currentTrack].path),
+            MPMediaItemPropertyArtist: "Listener",
+            MPMediaItemPropertyPlaybackDuration:  String(CMTimeGetSeconds(playerCurrentItem.duration)),
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: String(CMTimeGetSeconds(player.currentTime())),
             MPMediaItemPropertyArtwork: itemArtwork,
             ] as [String : Any]
         
@@ -235,11 +251,13 @@ class PlayerViewController: UIViewController {
             case .remoteControlTogglePlayPause:
                 togglePlayPause()
             case .remoteControlPlay:
-                player.pause()
-                updateDisplay()
+                togglePlayPause()
             case .remoteControlPause:
-                player.play()
-                updateDisplay()
+                togglePlayPause()
+            case .remoteControlNextTrack:
+                nextTrack()
+            case .remoteControlPreviousTrack:
+                previousTrack()
             default:
                 break
             }
@@ -263,15 +281,14 @@ class PlayerViewController: UIViewController {
 extension PlayerViewController: UIGestureRecognizerDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        print(touches.count)
         touch_startLocation = touches.first!.location(in: self.view)
         touchHandleMark.isHidden = false
-        touchHandleMark.frame = CGRect(x: touch_startLocation.x-22, y: touch_startLocation.y-22, width: 44, height: 44)
+        touchHandleMark.frame = CGRect(x: touch_startLocation.x-50, y: touch_startLocation.y-50, width: 100, height: 100)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch_location = touches.first!.location(in: self.view)
-        touchHandleMark.frame = CGRect(x: touch_location.x-22, y: touch_location.y-22, width: 44, height: 44)
+        touchHandleMark.frame = CGRect(x: touch_location.x-50, y: touch_location.y-50, width: 100, height: 100)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
